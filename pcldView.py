@@ -15,7 +15,7 @@ def main():
 
 
 
-  data = o3d.io.read_point_cloud("../Open3D-ML/PreAct_3D_F/pcd_" + str(ind) + ".ply")
+  data = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_" + str(ind) + ".ply")
   rdr.singleVis(data)
   
   return

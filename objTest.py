@@ -9,7 +9,7 @@ def random():
   cfg = _ml3d.utils.Config.load_from_file(cfg_file)
 
   model = ml3d.models.PointPillars(**cfg.model)
-  cfg.dataset['dataset_path'] = "./Open3D-ML/PreAct_3D_F"
+  cfg.dataset['dataset_path'] = "./PreAct_3D_F"
   dataset = ml3d.datasets.KITTI(cfg.dataset.pop('dataset_path', None), **cfg.dataset)
   pipeline = ml3d.pipelines.ObjectDetection(model, dataset=dataset, device="gpu", **cfg.pipeline)
 
@@ -45,7 +45,7 @@ def createData():
 
   data = []
   for i in range(0, 179):
-    pc = o3d.io.read_point_cloud("../Open3D-ML/PreAct_3D_F/pcd_" + str(i) + ".ply")
+    pc = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_" + str(i) + ".ply")
     dp = {
         'name': 'pc_' + str(i),
         'points': np.asarray(pc.points),
