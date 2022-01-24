@@ -5,7 +5,7 @@ import open3d.ml.tf as ml3d
 import numpy as np
 
 def random():
-  cfg_file = "./Open3D-ML/ml3d/configs/pointpillars_kitti.yml"
+  cfg_file = "../Open3D-ML/ml3d/configs/pointpillars_kitti.yml"
   cfg = _ml3d.utils.Config.load_from_file(cfg_file)
 
   model = ml3d.models.PointPillars(**cfg.model)
@@ -45,7 +45,7 @@ def createData():
 
   data = []
   for i in range(0, 179):
-    pc = o3d.io.read_point_cloud("./Open3D-ML/PreAct_3D_F/pcd_" + str(i) + ".ply")
+    pc = o3d.io.read_point_cloud("../Open3D-ML/PreAct_3D_F/pcd_" + str(i) + ".ply")
     dp = {
         'name': 'pc_' + str(i),
         'points': np.asarray(pc.points),
