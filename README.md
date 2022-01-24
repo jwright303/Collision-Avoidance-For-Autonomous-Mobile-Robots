@@ -5,6 +5,8 @@ To start working with this project, first make sure h5py and open3d are installe
 
 Similarly, A copy of the sim_with_point_cloud_all_frames.h5 must be installed in the root directory of this project (AWS s3 bucket).
 
+Next you will want to create a folder named 
+
 ## Running
 To run the program simply enter the line below:
 ```
