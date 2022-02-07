@@ -47,7 +47,7 @@ def clusterFilter(mp, pcld):
     #       eps - the density parameter that is used to find the neighboring points
     #       min_points - the minimum number of points needed to register something as a cluster
     #The function returns a labels array which assigns every point in the point cloud to a cluster a special cluster is also made (cluster 0) for the noise
-    labels = np.array(pcld.cluster_dbscan(eps=EPS, min_points=MIN_POINTS, print_progress=True))
+    labels = np.array(pcld.cluster_dbscan(eps=EPS, min_points=MIN_POINTS, print_progress=False))
     max_label = labels.max()
     
     print(f"Number of labels: {max_label + 1}\n")
@@ -95,7 +95,7 @@ def objBoundingBoxes(pcld_cluster, labels):
     
     #Iterate through all the clusters, each time get the points for just that cluster
     #Easily create a bounding box around just those points, and add that to the list of bounding boxes
-    for i in range(1, max(labels) + 1):
+    for i in range(0, (max(labels) + 1)):
         objPoints = cPoints[np.where(labels == i)]
         obj.points = o3d.utility.Vector3dVector(objPoints)
         
@@ -128,13 +128,9 @@ if __name__=="__main__":
     #Create bounding boxes for all the clusters
     bboxs = objBoundingBoxes(pcld_cluster, labels)
     
-
-    #Fix dimensions of origional point cloud
-    #arr = np.asarray(pcld.points)
-    #arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
-
     #Display the point cloud and the bounding boxes together
     #pcld.points = o3d.utility.Vector3dVector(arr)
+    print("bounding boxes", len(bboxs))
     bboxs.append(pcld_copy)
 
     o3d.visualization.draw_geometries(bboxs)
