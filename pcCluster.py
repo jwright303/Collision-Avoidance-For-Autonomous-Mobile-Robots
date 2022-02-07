@@ -3,6 +3,11 @@ import cv2
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+
+MIN_POINTS = 30
+EPS = 0.34
+
 
 ########################################
 ### Function for clustering the point cloud
@@ -13,24 +18,24 @@ def clusterFilter(mp, pcld):
     print("Minimum Points: ", mp)
 
     #Read in a point cloud, and create a spare point cloud 
-    pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_80.ply")
+    #pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_80.ply")
     pcld_copy = o3d.geometry.PointCloud()
 
     #Get the points of the point cloud for a little manipulation
     arr = np.asarray(pcld.points)
 
     #First fix the coordinate system of the point cloud, this way X (index 0) is right/left and Z (index 2) is front/back
-    arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
+    #arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
     #Save the fixed coordinate system to the copy point cloud
     pcld_copy.points = o3d.utility.Vector3dVector(arr)
     
     #Show the initial point cloud we will be working with
-    pcld.points = o3d.utility.Vector3dVector(arr)
+    #pcld.points = o3d.utility.Vector3dVector(arr)
     o3d.visualization.draw_geometries([pcld])
 
     
     #Cropping the point cloud, remove the floor and some of the top as well as some of the noise from the furthest distance
-    newA = arr[np.logical_and(arr[:,1] > 0.07, arr[:,1] < 6)]
+    newA = arr[np.logical_and(arr[:,1] > 0.06, arr[:,1] < 6)]
     newA = newA[newA[:,2] < 9.5]
     
     #Show the cropped point cloud
@@ -42,7 +47,7 @@ def clusterFilter(mp, pcld):
     #       eps - the density parameter that is used to find the neighboring points
     #       min_points - the minimum number of points needed to register something as a cluster
     #The function returns a labels array which assigns every point in the point cloud to a cluster a special cluster is also made (cluster 0) for the noise
-    labels = np.array(pcld.cluster_dbscan(eps=0.3, min_points=mp, print_progress=True))
+    labels = np.array(pcld.cluster_dbscan(eps=EPS, min_points=MIN_POINTS, print_progress=True))
     max_label = labels.max()
     
     print(f"Number of labels: {max_label + 1}\n")
@@ -56,6 +61,7 @@ def clusterFilter(mp, pcld):
     pcld_clustered = o3d.geometry.PointCloud()
     pcld_clustered.points = o3d.utility.Vector3dVector(newA)
     pcld_clustered.colors = o3d.utility.Vector3dVector(colors[:, :3])
+    o3d.visualization.draw_geometries([pcld_clustered])
 
     #Remove all every point that was assigned to the noise cluster - make sure its removed from the point cloud, labels, and colors array
     aFin = newA[colors[:,3] != 0]
@@ -103,8 +109,18 @@ def objBoundingBoxes(pcld_cluster, labels):
 
 
 if __name__=="__main__":
+    pcN = 80
+    if len(sys.argv) == 2:
+        pcN = sys.argv[1]
+
     #Load in a sample point cloud from some of our simulated data
-    pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_80.ply")
+    pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_" + str(pcN) + ".ply")
+    pcld_copy = o3d.geometry.PointCloud()
+
+    arr = np.asarray(pcld.points)
+    arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
+    pcld.points = o3d.utility.Vector3dVector(arr)
+    pcld_copy.points = o3d.utility.Vector3dVector(arr)
   
     #Cluster the point cloud 
     pcld_cluster, labels = clusterFilter(30, pcld)
@@ -114,12 +130,12 @@ if __name__=="__main__":
     
 
     #Fix dimensions of origional point cloud
-    arr = np.asarray(pcld.points)
-    arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
+    #arr = np.asarray(pcld.points)
+    #arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
 
     #Display the point cloud and the bounding boxes together
-    pcld.points = o3d.utility.Vector3dVector(arr)
-    bboxs.append(pcld)
+    #pcld.points = o3d.utility.Vector3dVector(arr)
+    bboxs.append(pcld_copy)
 
     o3d.visualization.draw_geometries(bboxs)
     
