@@ -2,28 +2,81 @@ import h5py
 import numpy as np
 import open3d
 import time
+from matplotlib import pyplot as plt
 import sys
+
+
+# Function for getting lines to display the three axis
+# Returns 3 lines for the x, y and z axis that are located at (0, 0)
+def getAxisLines():
+  cornersA = ([0,0,1], [0,0,-1])
+  cornersB = ([0,1,0], [0,-1,0])
+  cornersC = ([1,0,0], [-1,0,0])
+  lines = [(0, 1)]
+  colors = [[1, 0, 0] for i in range(len(lines))]
+  ls1 = open3d.geometry.LineSet()
+  ls1.points = open3d.utility.Vector3dVector(cornersA)
+  ls1.lines = open3d.utility.Vector2iVector(lines)
+  ls1.colors = open3d.utility.Vector3dVector(colors)
+
+  colors = [[0, 0, 0] for i in range(len(lines))]
+  ls2 = open3d.geometry.LineSet()
+  ls2.points = open3d.utility.Vector3dVector(cornersB)
+  ls2.lines = open3d.utility.Vector2iVector(lines)
+  ls2.colors = open3d.utility.Vector3dVector(colors)
+
+  colors = [[0, 0, 1] for i in range(len(lines))]
+  ls3 = open3d.geometry.LineSet()
+  ls3.points = open3d.utility.Vector3dVector(cornersC)
+  ls3.lines = open3d.utility.Vector2iVector(lines)
+  ls3.colors = open3d.utility.Vector3dVector(colors)
+
+  return ls1, ls2, ls3
 
 #Function for visualizing a single point cloud image
 #takes in the array of all point clouds, the scene to take one from, and the frame to select
 #Draws the point cloud, adjusting the orientation to be behind the camera
 def singleVis(ptcld):
   pcd = ptcld
-  #open3d.visualization.draw_geometries_with_custom_animation([pcd_list])
-  #open3d.visualization.draw_geometries([pcd], point_show_normal=True)
-  open3d.visualization.draw_geometries([pcd], 
-                                       zoom=0.7,
-                                       front=[ -0.97855071346545319, -0.0033921739789494394, 0.20597814042259249 ], 
-                                       lookat=[ 6.242122867289174, -0.28737243834214166, 4.2045998627737911 ], 
-                                       up=[ 0.20597635214661203, 0.00087214010748639964, 0.97855658074942609 ])
+  points = np.asarray(pcd.points)
+  #points[:, [0, 1, 2]] = points[:, [0, 2, 1]]
+  pcd.points = open3d.utility.Vector3dVector(points)
+
+  ls1, ls2, ls3 = getAxisLines()
+  open3d.visualization.draw_geometries([pcd, ls1, ls2, ls3])
+  
+  #return
+  #open3d.visualization.draw_geometries([pcd], 
+  #                                     zoom=0.7,
+  #                                     front=[ -0.97855071346545319, -0.0033921739789494394, 0.20597814042259249 ], 
+  #                                     lookat=[ 6.242122867289174, -0.28737243834214166, 4.2045998627737911 ], 
+  #                                     up=[ 0.20597635214661203, 0.00087214010748639964, 0.97855658074942609 ])
   return
+
+
+def readPCFromLocation(path, prefix, pcNum):
+  pclds = []
+  for i in range(0, pcNum):
+    pc = open3d.io.read_point_cloud(path + prefix + str(i) + ".ply")
+    pnts = np.asarray(pc.points)
+    #pnts[:, [0, 1, 2]] = pnts[:, [0, 2, 1]]
+    pc.points = open3d.utility.Vector3dVector(pnts)
+    pclds.append(pc)
+
+  return pclds
+
+
+def loadPCldsFromDepthFile():
+
+  return
+
 
 #This function loads the point clouds in from the h5 file specified here
 #This fcuntion returns a 2D array where the first axis is a list of all the scenes, and the second index is a list of all the frames of that scene
-def loadPClds():
-  f = h5py.File('sim_with_point_cloud_all_frames.h5', 'r')
+def loadPCldsFromFile(path, file):
+  f = h5py.File(path + file, 'r')
 
-  pntClds = []
+  #pntClds = []
 
   #Each scene is a perspective of a different sensor on the robot: front, left, right
   for robotSide in list(f.values()):
@@ -34,24 +87,29 @@ def loadPClds():
     #Iterate through all the frames, turn them into a point cloud, then add them to the list
     for frame in list(frames.values()):
       cloud = frame['cloud']
+      amp = np.asarray(frame['amplitude'])
       npCld = np.array(cloud)
 
       #Reshapes from a 320 by 240 by 3 into 76800 by 3.
       #These are all just points in 3D space so dementionality can be reduced
       finShp = npCld.reshape(76800, 3)
+      ampFix = amp.reshape(76800, 1)
+
+      #Remove all point in the cloud that don't meet the amplitude requirement
+      finShp = finShp[ampFix[:,0] > 20]
+
+      #finShp[:, [0, 1, 2]] = finShp[:, [1, 2, 0]]
+      #finShp[:,2] *= -1
 
       #Creates a pointcloud object and assignes all the points
       pcd = open3d.geometry.PointCloud()
       pcd.points = open3d.utility.Vector3dVector(finShp)
       curS.append(pcd)
 
-    pntClds.append(curS)
+    #pntClds.append(curS)
   
-  #geom = open3d.geometry.PointCloud()
-  #geom.points = scene[0].points
-  #open3d.io.write_point_cloud("test_pntcld.pcd", pntClds[0][0])
-  
-  return pntClds
+    return curS
+
 
 def viewPCs(pntClds):
   #Iterate through each scene
@@ -88,33 +146,3 @@ def viewPCs(pntClds):
 
   #Show single point cloud with propper orientation
   return
-
-def errMess():
-  print("Insufficient command line arguments")
-  print("To run enter 'python3 h5Reader.py [arg]'")
-  print("[arg] can be replaced with view or save to view the point cloud animations or save the point cloud")
-  return -1
-
-def randtest1():
-  pntClds = loadPClds()
-  singleVis(pntClds, 0, 10)
-  return
-
-
-  if len(sys.argv) < 2:
-    errMess()
-  else:
-    if sys.argv[1] == "view":
-      viewPCs(pntClds)
-    elif sys.argv[1] == "save":
-      print("not yet working")
-    else:
-      errMess()
-  return
-
-
-#def main():
-#  randtest1()
-#  return
-
-#main()

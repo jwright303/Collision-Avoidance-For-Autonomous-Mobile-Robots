@@ -1,21 +1,27 @@
 import h5Reader as rdr
 import open3d as o3d
 import numpy as np
-import sys
+import argparse 
 
 
 def main():
-  if len(sys.argv) != 2:
-    print("Invalid command line arguments, only one parameter can be supplied, the index of the point cloud desired")
-    return -1
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--pth", help="specify the path of the pclds", type=str)
+  parser.add_argument("--pref", help="specify the prefix of the point clouds", type=str)
+  parser.add_argument("--pcNum", help="specify the number of point clouds", type=int)
+  
+  args = parser.parse_args()
+  pth = args.pth
+  pref = args.pref
+  pcNum = args.pcNum
 
-  ind = int(sys.argv[1])
-  print("photo index: ", ind)
+  data = o3d.io.read_point_cloud(pth + pref + str(pcNum) + ".ply")
+  arr = np.asarray(data.points)
 
-
-
-
-  data = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_" + str(ind) + ".ply")
+  #newA = arr[arr[:,2] > 0.3]
+  newA = arr
+  data.points = o3d.utility.Vector3dVector(newA)
+  
   rdr.singleVis(data)
   
   return
