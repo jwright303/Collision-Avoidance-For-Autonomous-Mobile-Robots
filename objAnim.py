@@ -72,6 +72,33 @@ def runAnimation():
   vis.destroy_window()
   return
 
+
+
+def danger(box, arr, front):
+  points = np.asarray(box.get_box_points())
+  minP = box.get_min_bound()[0]
+  maxP = box.get_max_bound()[0]
+
+  pNear = points[np.logical_and(points[:,0] > -0.75, points[:,0] < -0.75)]
+  cliffC = arr[(arr[:,0] > -0.75) & (arr[:,0] < 0.75) & (arr[:,1] < -0.6)]
+
+  if (minP < 0 and maxP > 0) and front > -3:
+    print("Object close and spans the critical area")
+    return True
+  elif pNear.size != 0 and front > -3:
+    print("Object close and ends are in the critical area")
+    return True
+  elif cliffC.size > 30:
+    print("Cliff detected")
+    geom = o3d.geometry.PointCloud()
+    geom.points = o3d.utility.Vector3dVector(cliffC)
+    o3d.visualization.draw_geometries([geom])
+    return True
+    #Cliff scan check
+
+  return False
+
+
 def objAnim(pcds):
   bboxs = None
   i = 0
@@ -101,7 +128,7 @@ def objAnim(pcds):
         vis.remove_geometry(box)
   
     #Cluster the point cloud 
-    pcld_cluster, labels = clusterFilter(30, pcld)
+    pcld_cluster, labels = clusterFilter(30, 0.3, pcld)
 
     #Create bounding boxes for all the clusters
     bboxs = objBoundingBoxes(pcld_cluster, labels)
@@ -131,8 +158,8 @@ def objAnim(pcds):
      
       #print("check point")
       #print(cx, mIn)
-      if (cx > -0.5 and cx < 0.5) and mx > -3:
-        print("about to collide")
+      if danger(box, arr,  mx):
+        print("about to collide", mx)
         return [pcld, bboxs, i]
 
     i = i + 1

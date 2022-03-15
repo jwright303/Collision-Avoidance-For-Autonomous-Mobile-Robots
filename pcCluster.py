@@ -51,7 +51,7 @@ def boxDetectionTest():
 ### Takes in the minimum_points parameter for the clustering algorithm, and the point cloud to cluster on 
 ### Returns a clustered point cloud, and a list of the cluster number corresponding to the points in the point cloud
 ########################################
-def clusterFilter(mp, pcld, v=False):
+def clusterFilter(mp, eps,  pcld, v=False):
     if verbose or v:
         print("Minimum Points: ", mp)
 
@@ -97,7 +97,7 @@ def clusterFilter(mp, pcld, v=False):
     # Note: The following 6 lines were taken from the Open3d website and modified slightly - From the Geometry section of the tutorial, under the DBSCAN header
     # URL: http://www.open3d.org/docs/latest/tutorial/geometry/pointcloud.html#DBSCAN-clustering
     #
-    labels = np.array(pcld.cluster_dbscan(eps=EPS, min_points=MIN_POINTS, print_progress=False))
+    labels = np.array(pcld.cluster_dbscan(eps=eps, min_points=mp, print_progress=False))
     max_label = labels.max()
     
     if verbose or v:
@@ -188,7 +188,7 @@ if __name__=="__main__":
     pcld_copy.points = o3d.utility.Vector3dVector(arr)
   
     #Cluster the point cloud 
-    pcld_cluster, labels = clusterFilter(30, pcld)
+    pcld_cluster, labels = clusterFilter(20, 0.3, pcld)
 
     #Create bounding boxes for all the clusters
     bboxs = objBoundingBoxes(pcld_cluster, labels)

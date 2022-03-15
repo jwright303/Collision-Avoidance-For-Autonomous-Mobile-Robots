@@ -89,33 +89,40 @@ def depthToPC(depths, base):
   pic_height = 240
 
   distCoeff = np.zeros((5, 1), np.float64)
-  #distCoeff[0,0] = 0.517
-  #distCoeff[1,0] = -0.274
-  #distCoeff[2,0] = -0.00012
-  #distCoeff[3,0] = -0.00014
-  #distCoeff[4,0] = 0.851
   distCoeff[0,0] = 0.517
-  distCoeff[1,0] = -0.620
-  distCoeff[2,0] = 0.000
-  distCoeff[3,0] = 0.000
-  distCoeff[4,0] = 0.100
+  distCoeff[1,0] = -0.274
+  distCoeff[2,0] = -0.00012
+  distCoeff[3,0] = -0.00014
+  distCoeff[4,0] = 0.851
+  #distCoeff[0,0] = 0.517
+  #distCoeff[1,0] = -0.620
+  #distCoeff[2,0] = 0.000
+  #distCoeff[3,0] = 0.000
+  #distCoeff[4,0] = 0.100
 
   cam = np.eye(3, dtype=np.float32)
-  cam[0,2] = pic_width / 2.0
-  cam[1,2] = pic_height / 2.0
-  cam[0,0] = f_hor_pix
-  cam[1,1] = f_vert_pix
+  #cam[0,2] = pic_width / 2.0
+  #cam[1,2] = pic_height / 2.0
+  #cam[0,0] = f_hor_pix
+  #cam[1,1] = f_vert_pix
+
+  cam[0,0] = 180.9
+  cam[0,2] = 162
+  cam[1,1] = 181
+  cam[1,2] = 122
+  cam[2,2] = 1
+
 
   b_dst = np.asarray(cv2.undistort(base_arr, cam, distCoeff))
   d_dst = np.asarray(cv2.undistort(depths_arr, cam, distCoeff))
 
-  #b_dst = base_arr
-  #d_dst = depths_arr
+  b_dst = base_arr
+  d_dst = depths_arr
   #print(dst)
 
-  #cv2.imshow('dst', b_dst)
-  #cv2.waitKey(0)
-  #cv2.destroyAllWindows()
+  cv2.imshow('dst', b_dst)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
   b_Im = o3d.geometry.Image((b_dst.astype(np.float32)))
   d_Im = o3d.geometry.Image((d_dst.astype(np.float32)))
   rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(b_Im, d_Im, depth_scale=0.7, depth_trunc=70)
@@ -136,12 +143,12 @@ def depthToPC(depths, base):
     #then overlays the bounding boxes ontop of the point cloud
 if __name__=="__main__":
   pntClds = readH5("./", "actor_robot.h5")
-  pcld_cluster, labels = clusterFilter(30, pntClds[0], v=True)
+  pcld_cluster, labels = clusterFilter(30, 0.3, pntClds[0], v=False)
   bboxs = objBoundingBoxes(pcld_cluster, labels)
 
   bboxs.append(pntClds[0])
 
-  o3d.visualization.draw_geometries(bboxs)
+  o3d.visualization.draw_geometries([pntClds[0]])
 
   #viewPCs([pntClds])
 

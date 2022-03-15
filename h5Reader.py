@@ -96,7 +96,7 @@ def loadPCldsFromFile(path, file):
       ampFix = amp.reshape(76800, 1)
 
       #Remove all point in the cloud that don't meet the amplitude requirement
-      finShp = finShp[ampFix[:,0] > 20]
+      finShp = finShp[ampFix[:,0] > 28]
 
       #finShp[:, [0, 1, 2]] = finShp[:, [1, 2, 0]]
       #finShp[:,2] *= -1
@@ -120,6 +120,7 @@ def viewPCs(pntClds):
     
     #Start the visualization with the first point cloud of the scene
     geom = open3d.geometry.PointCloud()
+
     geom.points = scene[0].points
     vis.add_geometry(geom)
     vC = vis.get_view_control()
@@ -129,6 +130,8 @@ def viewPCs(pntClds):
     #Runs through the scene 3 times befor3 moving to the next
     while(True): 
       #Loops through the point clouds
+      cP = np.asarray(scene[i % len(scene)].points)
+      #newA = arr[(arr[:,1] < -0.01) & (arr[:,0] < 4, arr[:,0] > -4)]
       geom.points = scene[i % len(scene)].points
       #Update visualizer with the new frame
       vis.update_geometry(geom)
