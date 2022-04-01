@@ -11,7 +11,8 @@ open3d - http://www.open3d.org/docs/release/getting_started.html <br>
 numpy - https://numpy.org/install/ <br>
 
 ### Other Needed Files
-Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file or they can be used directly.
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. The format of the dataset needs to be as follows:
+
 
 ## Important Files
 The important files in this repository are the following: <br>
