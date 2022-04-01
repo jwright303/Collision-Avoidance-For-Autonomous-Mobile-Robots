@@ -1,9 +1,17 @@
 # CA-ASMR
 
-## Getting Started
-To start working with this project, first make sure h5py and open3d are installed
+## Setup
+### Needed Packages
+To start working with this project, first make sure h5py, opencv (python), numpy, and open3d are installed
+Follow the links bellow for instructions on installation
 
-Similarly, A copy of the sim_with_point_cloud_all_frames.h5 installed in the root directory of this project would be helpful (AWS s3 bucket).
+h5py - https://docs.h5py.org/en/stable/build.html#source-installation-on-windows
+opencv - https://pypi.org/project/opencv-python/
+open3d - http://www.open3d.org/docs/release/getting_started.html
+numpy - https://numpy.org/install/
+
+### Other Needed Files
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file or they can be used directly.
 
 ## Important Files
 The important files in this repository are the following: <br>
