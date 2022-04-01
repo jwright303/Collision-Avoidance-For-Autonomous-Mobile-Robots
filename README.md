@@ -24,6 +24,7 @@ The important files in this repository are the following: <br>
   `depthToPC.py` - Converts depth images to point clouds from an h5 file<br>
   `dsetFormat.py` - Creates a dataset from either depth images or point cloud images <br>
   `h5Reader.py` - Reads in point cloud images from an h5 file <br>
+  `sim.py` - Simulates the point clouds with object detection and the rules enabled <br>
   
 Note that all of these python files should be run on python version 3 or greater. <br>
 All of the files except for `h5Reader.py` and `depthToPC.py` take in command line arguments which can be seen by running the program with the -h option (ie. `python3 dsetFormat.py -h`)<br>
