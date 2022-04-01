@@ -21,6 +21,12 @@ The important files in this repository are the following: <br>
   `pcldAnim.py` - Animates the point cloud in the database <br>
   `pcldView.py` - Views a single point cloud <br>
   `objAnim.py` - Animates the point cloud with object detection enabled <br>
+  `depthToPC.py` - Converts depth images to point clouds from an h5 file<br>
+  `dsetFormat.py` - Creates a dataset from either depth images or point cloud images <br>
+  `h5Reader.py` - Reads in point cloud images from an h5 file <br>
+  
+Note that all of these python files should be run on python version 3 or greater. <br>
+All of the files except for `h5Reader.py` and `depthToPC.py` take in command line arguments which can be seen by running the program with the -h option<br>
 
 
 ## Running
