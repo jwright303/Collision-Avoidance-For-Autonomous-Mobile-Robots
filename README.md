@@ -37,6 +37,6 @@ All of the files except for `h5Reader.py` and `depthToPC.py` take in command lin
 
 
 ## Running
-
+The most relevent programs to run are pcCluster.py and sim.py. pcCluster
 
 See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running
