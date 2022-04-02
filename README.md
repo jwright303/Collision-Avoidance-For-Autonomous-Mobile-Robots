@@ -11,8 +11,13 @@ open3d - http://www.open3d.org/docs/release/getting_started.html <br>
 numpy - https://numpy.org/install/ <br>
 
 ### Other Needed Files
-Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. The format of the dataset needs to be as follows:
-
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script. If you are using your own point cloud dataset, the format must be as follows:
+```
+Point_Cloud_Directory
+  | pref0.ply
+  | pref1.ply
+  ...
+```
 
 ## Important Files
 The important files in this repository are the following: <br>
@@ -32,12 +37,6 @@ All of the files except for `h5Reader.py` and `depthToPC.py` take in command lin
 
 
 ## Running
-To run pcCluster.py program enter the command below:
-```
-python pcCluster.py [pcld_index] [verbose]
-```
-The bracketed sections indicate optional parameters to pass into the program <br>
-  [pcld_index] - Supplies the specific index for the program to work with (0-178) <br>
-  [verbose] - This will print out the result of each operation on the point cloud <br>
+
 
 See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running
