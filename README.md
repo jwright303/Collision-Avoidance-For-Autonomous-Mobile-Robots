@@ -38,6 +38,7 @@ All of the files except for `h5Reader.py` and `depthToPC.py` take in command lin
 
 
 ## Running
-The most relevent programs to run are pcCluster.py and sim.py. pcCluster
+The most relevent program to run is the sim.py program. This program implements the object detection algorithm as well as the rules we created to dertermine when the robot should stop when it detects objects. <br>
 
+The object detection algorithm that it implements is pcCluster, and an example of it running can be found below <br>
 See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running
