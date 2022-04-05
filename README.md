@@ -1,9 +1,24 @@
 # CA-ASMR
 
-## Getting Started
-To start working with this project, first make sure h5py and open3d are installed
+## Setup
+### Needed Packages
+To start working with this project, first make sure h5py, opencv (python), numpy, and open3d are installed <br>
+Follow the links bellow for instructions on installation
 
-Similarly, A copy of the sim_with_point_cloud_all_frames.h5 installed in the root directory of this project would be helpful (AWS s3 bucket).
+h5py - https://docs.h5py.org/en/stable/build.html#source-installation-on-windows <br>
+opencv - https://pypi.org/project/opencv-python/ <br>
+open3d - http://www.open3d.org/docs/release/getting_started.html <br>
+numpy - https://numpy.org/install/ <br>
+
+### Other Needed Files
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script, and that you have the h5 file in the same location as the script. If you are using your own point cloud dataset, the format must be as follows:
+```
+Point_Cloud_Folder
+  | pref0.ply
+  | pref1.ply
+  ...
+```
+Where pref is your chosen prefix of the point cloud. (This will be supplied through the command line later when running the scripts)
 
 ## Important Files
 The important files in this repository are the following: <br>
@@ -13,15 +28,17 @@ The important files in this repository are the following: <br>
   `pcldAnim.py` - Animates the point cloud in the database <br>
   `pcldView.py` - Views a single point cloud <br>
   `objAnim.py` - Animates the point cloud with object detection enabled <br>
+  `depthToPC.py` - Converts depth images to point clouds from an h5 file<br>
+  `dsetFormat.py` - Creates a dataset from either depth images or point cloud images <br>
+  `h5Reader.py` - Reads in point cloud images from an h5 file <br>
+  `sim.py` - Simulates the point clouds with object detection and the rules enabled <br>
+  
+Note that all of these python files should be run on python version 3 or greater. <br>
+All of the files except for `h5Reader.py` and `depthToPC.py` take in command line arguments which can be seen by running the program with the -h option (ie. `python3 dsetFormat.py -h`)<br>
 
 
 ## Running
-To run pcCluster.py program enter the command below:
-```
-python pcCluster.py [pcld_index] [verbose]
-```
-The bracketed sections indicate optional parameters to pass into the program <br>
-  [pcld_index] - Supplies the specific index for the program to work with (0-178) <br>
-  [verbose] - This will print out the result of each operation on the point cloud <br>
+The most relevent program to run is the sim.py program. This program implements the object detection algorithm as well as the rules we created to dertermine when the robot should stop when it detects objects. <br>
 
+The object detection algorithm that it implements is pcCluster, and an example of it running can be found below <br>
 See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running
