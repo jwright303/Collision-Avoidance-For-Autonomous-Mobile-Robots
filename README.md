@@ -18,6 +18,7 @@ Point_Cloud_Folder
   | pref1.ply
   ...
 ```
+Where pref is your chosen prefix of the point cloud. (This will be supplied through the command line later when running the scripts)
 
 ## Important Files
 The important files in this repository are the following: <br>
