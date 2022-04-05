@@ -11,9 +11,9 @@ open3d - http://www.open3d.org/docs/release/getting_started.html <br>
 numpy - https://numpy.org/install/ <br>
 
 ### Other Needed Files
-Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script. If you are using your own point cloud dataset, the format must be as follows:
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script, and that you have the h5 file in the same location as the script. If you are using your own point cloud dataset, the format must be as follows:
 ```
-Point_Cloud_Directory
+Point_Cloud_Folder
   | pref0.ply
   | pref1.ply
   ...
