@@ -5,5 +5,5 @@ These rules dictate if an object is in the cameras path, and if any of the rules
 At this point, the program will stop execution and display the scene in which the rule was violated. During execution, a bounding <br>
 box is also displayed which represents the area that the rules are checking for violations in. <br>
 
-Scene before collision:
+Scene before collision:<br>
 <img width="680" alt="Screen Shot 2022-04-05 at 11 45 37 AM" src="https://user-images.githubusercontent.com/41707123/161827571-628ef597-bda3-40d1-8b3a-5a9b82646bef.png">
