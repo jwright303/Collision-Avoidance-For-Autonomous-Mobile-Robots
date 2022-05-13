@@ -60,17 +60,21 @@ def readOneImage():
 
 def readAll():
   c = 0
-  for i in range(40, 53):
-    for j in range(0, 12):
-      if j < 10:
-        pc = o3d.io.read_point_cloud("./ptclds/test/d_image_20220420-2230" + str(i) + "-00" + str(j) + ".pcd")
-      else:
-        pc = o3d.io.read_point_cloud("./ptclds/test/d_image_20220420-2230" + str(i) + "-0" + str(j) + ".pcd")
+  ptclds = []
+  st = "d_image_20220421-010505-000.pcd"
+  for i in range(1, 18):
+    if i < 10:
+      pth = "./ptclds/TwoObjects/PointClouds/d_image_20220421-01070"
+    else:
+      pth = "./ptclds/TwoObjects/PointClouds/d_image_20220421-0107"
+
+    for j in range(0, 7):
+      pc = o3d.io.read_point_cloud(pth + str(i) + "-00" + str(j) + ".pcd")
       points = np.asarray(pc.points)
       mask = ~np.isnan(points).any(axis=1)
       points = points[mask]
       pc.points = o3d.utility.Vector3dVector(points)
-      out = o3d.io.write_point_cloud("./Camera_Fixed/pcld_" + str(c) + ".ply", pc)
+      out = o3d.io.write_point_cloud("./ptclds/Two_Fixed/pcld_" + str(c) + ".ply", pc)
       if out:
         c += 1
       print(out)
@@ -81,10 +85,16 @@ def readAll():
       #                            up=[-0.0694, -0.9768, 0.2024])
 
 
+def simpleTest():
+  pc = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_70.ply")
+  o3d.io.write_point_cloud("./test.pcd", pc, write_ascii=True)
+  return
+
 
 if __name__ == '__main__':
   #reCreateSet()
   #pclds =  pc.points = o3d.utility.Vector3dVector(new) 
-  readAll()
-  readOneImage()
+  #readAll()
+  #readOneImage()
+  simpleTest()
    

@@ -6,6 +6,17 @@ from matplotlib import pyplot as plt
 import sys
 
 
+def distanceFilter(pclds):
+  for pc in pclds:
+    arr = np.asarray(pc.points)
+    #arr /= -230
+    sq = np.square(arr)
+    sm = np.sum(sq, axis=1)
+    arr = arr[sm < 80.0]
+    pc.points = open3d.utility.Vector3dVector(arr)
+
+  return pclds
+
 # Function for getting lines to display the three axis
 # Returns 3 lines for the x, y and z axis that are located at (0, 0)
 def getAxisLines():
@@ -40,9 +51,10 @@ def singleVis(ptcld):
   pcd = ptcld
   points = np.asarray(pcd.points)
   #points[:, [0, 1, 2]] = points[:, [0, 2, 1]]
-  pcd.points = open3d.utility.Vector3dVector(points)
+  #pcd.points = open3d.utility.Vector3dVector(points)
 
   ls1, ls2, ls3 = getAxisLines()
+  #print(ls1, ls2, ls3)
   open3d.visualization.draw_geometries([pcd, ls1, ls2, ls3])
   
   #return
@@ -57,7 +69,7 @@ def singleVis(ptcld):
 def readPCFromLocation(path, prefix, pcNum):
   pclds = []
   for i in range(0, pcNum):
-    pc = open3d.io.read_point_cloud(path + prefix + str(i) + ".ply")
+    pc = open3d.io.read_point_cloud(path + prefix + str(i) + ".ply", remove_nan_points=True)
     pnts = np.asarray(pc.points)
     #pnts[:, [0, 1, 2]] = pnts[:, [0, 2, 1]]
     pc.points = open3d.utility.Vector3dVector(pnts)
@@ -123,8 +135,6 @@ def viewPCs(pntClds):
 
     geom.points = scene[0].points
     vis.add_geometry(geom)
-    vC = vis.get_view_control()
-    vC.rotate(15.0, 50.0)
     
     i = 1
     #Runs through the scene 3 times befor3 moving to the next
@@ -143,7 +153,7 @@ def viewPCs(pntClds):
       time.sleep(0.2)
 
       #Move on to next scene after 3 iterations
-      if i == 3 * len(scene):
+      if i == 2 * len(scene):
         break
     vis.destroy_window()
 

@@ -79,10 +79,7 @@ def depthToPC(depths, base):
                         [  0.,    0.,    1. ]])
 
 
-  dist = [0.517, -0.274, -0.00012, -0.00014, 0.851]
-
-  #dst = cv2.undistort(base_arr, camMtrx, dist, None, None)
-
+  #dist = [0.517, -0.274, -0.00012, -0.00014, 0.851]
 
   #Other half of the camera intrinsics - the width and height of the image, as well as the x, y principle point
   pic_width = 320
@@ -94,11 +91,6 @@ def depthToPC(depths, base):
   distCoeff[2,0] = -0.00012
   distCoeff[3,0] = -0.00014
   distCoeff[4,0] = 0.851
-  #distCoeff[0,0] = 0.517
-  #distCoeff[1,0] = -0.620
-  #distCoeff[2,0] = 0.000
-  #distCoeff[3,0] = 0.000
-  #distCoeff[4,0] = 0.100
 
   cam = np.eye(3, dtype=np.float32)
   #cam[0,2] = pic_width / 2.0
@@ -113,16 +105,16 @@ def depthToPC(depths, base):
   cam[2,2] = 1
 
 
-  b_dst = np.asarray(cv2.undistort(base_arr, cam, distCoeff))
-  d_dst = np.asarray(cv2.undistort(depths_arr, cam, distCoeff))
+  #b_dst = np.asarray(cv2.undistort(base_arr, cam, distCoeff))
+  #d_dst = np.asarray(cv2.undistort(depths_arr, cam, distCoeff))
 
   b_dst = base_arr
   d_dst = depths_arr
   #print(dst)
 
-  cv2.imshow('dst', b_dst)
-  cv2.waitKey(0)
-  cv2.destroyAllWindows()
+  #cv2.imshow('dst', b_dst)
+  #cv2.waitKey(0)
+  #cv2.destroyAllWindows()
   b_Im = o3d.geometry.Image((b_dst.astype(np.float32)))
   d_Im = o3d.geometry.Image((d_dst.astype(np.float32)))
   rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(b_Im, d_Im, depth_scale=0.7, depth_trunc=70)

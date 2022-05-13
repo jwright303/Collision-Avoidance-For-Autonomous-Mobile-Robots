@@ -1,5 +1,4 @@
 import open3d as o3d
-import cv2
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -59,7 +58,7 @@ def clusterFilter(mp, eps,  pcld, v=False):
         o3d.visualization.draw_geometries([pcld])
     #Read in a point cloud, and create a spare point cloud 
     #pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_80.ply")
-    pcld = pcld.voxel_down_sample(voxel_size=VOXEL_D)
+    #pcld = pcld.voxel_down_sample(voxel_size=VOXEL_D)
     #pcld = pcld.voxel_down_sample(voxel_size=0.02)
     #pcld, ind = pcld.remove_statistical_outlier(nb_neighbors=20,
     #                                                    std_ratio=2.0)
@@ -188,7 +187,7 @@ if __name__=="__main__":
     pcld_copy.points = o3d.utility.Vector3dVector(arr)
   
     #Cluster the point cloud 
-    pcld_cluster, labels = clusterFilter(20, 0.3, pcld)
+    pcld_cluster, labels = clusterFilter(20, 0.15, pcld)
 
     #Create bounding boxes for all the clusters
     bboxs = objBoundingBoxes(pcld_cluster, labels)

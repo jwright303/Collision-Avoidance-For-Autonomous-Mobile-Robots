@@ -64,6 +64,26 @@ def danger(box, arr, front):
   return False
 
 
+def testCurPcld(curPc):
+  arr = np.asarray(curPc.points)
+  
+  pcld_cluster, labels = clusterFilter(85, 0.3, curPc)
+  bboxs = objBoundingBoxes(pcld_cluster, labels)
+
+  for box in bboxs:
+    bpoints = np.asarray(box.get_box_points())
+    bcent = box.get_center()
+    mx = np.amax(bpoints[:,2])
+   
+    #print("check point")
+    #print(cx, mIn)
+    if danger(box, arr,  mx):
+      print("about to collide", mx)
+      return [curPc, bboxs, arr]
+
+  return None
+
+
 def pcAnim(pclds, boxC):
   #Iterate through each scene
   #For each scene create a new visualizer
@@ -75,31 +95,25 @@ def pcAnim(pclds, boxC):
 
   geom.points = pclds[0].points
   vis.add_geometry(geom)
-  vis.add_geometry(boxC)
+  #vis.add_geometry(boxC)
 
+  print("Begining Simulation..")
   i = 1
   while(True):
     curPc = pclds[i % len(pclds)]
+    og = o3d.geometry.PointCloud()
     geom.points = curPc.points
+    og.points = curPc.points
     vis.update_geometry(geom)
     vis.poll_events()
     vis.update_renderer()
 
-    arr = np.asarray(curPc.points)
-    
-    pcld_cluster, labels = clusterFilter(30, 0.3, curPc)
-    bboxs = objBoundingBoxes(pcld_cluster, labels)
-
-    for box in bboxs:
-      bpoints = np.asarray(box.get_box_points())
-      bcent = box.get_center()
-      mx = np.amax(bpoints[:,2])
-     
-      #print("check point")
-      #print(cx, mIn)
-      if danger(box, arr,  mx):
-        print("about to collide", mx)
-        return [curPc, bboxs, i, boxC, arr]
+    pcRes = testCurPcld(curPc)
+    if pcRes != None:
+      pcRes.insert(2, i)
+      pcRes.insert(3, boxC)
+      pcRes.insert(4, og)
+      return pcRes
 
     i = i + 1
     #time.sleep(0.2)
@@ -117,21 +131,27 @@ if __name__=="__main__":
   parser.add_argument("--pth", help="specify the path of the pclds", type=str)
   parser.add_argument("--pref", help="specify the prefix of the point clouds", type=str)
   parser.add_argument("--pcNum", help="specify the number of point clouds", type=int)
+  parser.add_argument("--dF", help="specify if a distance filter should be used", nargs='?', const=False, type=bool)
   
   args = parser.parse_args()
   pth = args.pth
   pref = args.pref
   pcNum = args.pcNum
+  dF = args.dF
 
   box = createRuleBox()
   pclds = rdr.readPCFromLocation(pth, pref, pcNum)
+  if dF:
+    pclds = rdr.distanceFilter(pclds)
   res = pcAnim(pclds, box)
+  #res = pcAnim(pclds, None)
 
   if res != None:
     print("Frame before collision")
     bbs = res[1]
     bbs.append(res[0])
     bbs.append(res[3])
+    bbs.append(res[4])
     print("Index: " + str(res[2]))
     o3d.visualization.draw_geometries(bbs)
 
