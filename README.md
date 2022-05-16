@@ -1,5 +1,15 @@
 # CA-ASMR
 
+### Importance of Collision Avoidance for AMR
+
+Today, robots are becoming increasingly more and more popular and used in many industries. Robots need to maneuver around their environment safely and require a system to detect objects. Our project Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots through the use of a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, chairs, as well as avoiding falling off edges/cliffs like sidewalks. These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS TOF camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud for usable information used the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
+
+### Our experience beginning
+
+To begin developing and continue the work for this project, you will need to install ROS2 on your system for the robot operating system, as well as QTcreator the IDE. The ROS2 Galactic installation instructions can be found at https://docs.ros.org/en/galactic/Installation.html. The QTcreator installation can be found at https://www.qt.io/download, selecting the try qt option. Similarly like the software required for development. You will also require a ESPROS TOF camera 660 as the capturing device https://www.espros.com/photonics/tofcam660/#pictures. 
+
+Before using the ESPROS TOF camera 660, you will first need to calibrate the specifications of the camera to correctly utilize it. We would recommend that you should ask for guidance from PreAct Technologies (our project partner at the time) as to what the ESPROS TOF camera 660 specifications should be. After the calibration of the camera specifications, the raw data captured from the ESPROS TOF camera 660 will then need to be exported as a ply file usable for point clouds. There are multiple methods available to export the raw data captured from the camera to a ply file. Specifically EPROS has their own software interface for the camera that contains a feature to export as a ply file. Other methods include using functions from modules such as open3d and h5 to convert the depth image into a ply file. Initially our group used the ESPROS software to convert the raw data to ply files. But we were experiencing issues so, our group has been utilizing the depth images captured from the camera and converting them to ply files.
+
 ## Setup
 ### Needed Packages
 To start working with this project, first make sure h5py, opencv (python), numpy, and open3d are installed <br>
