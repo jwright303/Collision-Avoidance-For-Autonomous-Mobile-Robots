@@ -72,5 +72,3 @@ models. While Open3d does provide modules to support this, they require large la
 ## Reasoning For Our Approach
 
 ## Future Projects
-
-##  
