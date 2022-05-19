@@ -153,7 +153,8 @@ def viewPCs(pntClds):
       time.sleep(0.2)
 
       #Move on to next scene after 3 iterations
-      if i == 2 * len(scene):
+      if i == 4 * len(scene):
+        time.sleep(6)
         break
     vis.destroy_window()
 
