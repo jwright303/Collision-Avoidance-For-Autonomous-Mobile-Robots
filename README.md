@@ -2,11 +2,11 @@
 
 ### Importance of Collision Avoidance for AMR
 
-Today, robots are becoming increasingly more and more popular and used in many industries. Robots need to maneuver around their environment safely and require a system to detect objects. Our project Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots through the use of a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, chairs, as well as avoiding falling off edges/cliffs like sidewalks. 
+Today, robots are becoming more and more popular as a variety of new industries begin to adpot them. In order for them to become more widespread, these robots need to maneuver around their environment safely requires the capability to detect and avoid objects and drop-offs. Our project: Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots through the use of a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, chairs, as well as avoiding falling off edges/cliffs like sidewalks. 
 
-These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS TOF camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud for usable information used the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
+These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS Time Of Flight (TOF) camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud and used by the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
 
-### Our experience beginning
+### Prerequisites
 
 To begin developing and continue the work for this project, you will need to install ROS2 on your system for the robot operating system, as well as QTcreator the IDE. The ROS2 Galactic installation instructions can be found at https://docs.ros.org/en/galactic/Installation.html. The QTcreator installation can be found at https://www.qt.io/download, selecting the try qt option. Similarly like the software required for development. You will also require a ESPROS TOF camera 660 as the capturing device https://www.espros.com/photonics/tofcam660/#pictures. 
 
@@ -33,9 +33,7 @@ Point_Cloud_Folder
 Where pref is your chosen prefix of the point cloud. (This will be supplied through the command line later when running the scripts)
 
 ### Other Equipment
-For this project we were also given an Esporos ________ camera from our project partners to be able to collect our own point cloud images. While it is not strictly necessary to have a time <br>
-of flight camera, some method of obtaining point clouds is needed to be able to make use of this project. It is also important to note that having the right scale of the point clouds is <br>
-absolutely necessary to be able to utilize the object detection portion of this project.  
+For this project we were also given an Esporos TOF camear 660 camera from our project partners to be able to collect our own point cloud images. While it is not strictly necessary to have a time of flight camera, some method of obtaining point clouds is needed to be able to make use of this project. It is also important to note that having the right scale of the point clouds is absolutely necessary to be able to utilize the object detection portion of this project.  
 
 #### Esporos Settings
 Mention some of the settings we set for the camera at the very end
