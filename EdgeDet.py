@@ -5,10 +5,10 @@ from PIL import Image
 import PIL
 import diplib as dip
 
-img_orig = cv2.imread("cliff_front.png", cv2.IMREAD_GRAYSCALE)
+img_orig = cv2.imread("cliff_back.png", cv2.IMREAD_GRAYSCALE)
 
 # (image [contrast]) --begin--
-img = cv2.imread("cliff_front.png", 1)
+img = cv2.imread("cliff_back.png", 1)
 
 #--Reading the image---
 #cv2.imshow("img",img) 
@@ -48,7 +48,7 @@ img3 = cv2.imread("canny_final_contrast.png")
 
 
 # line detection using hough transform --begin--
-img_hough = cv2.imread("cliff_front.png")
+img_hough = cv2.imread("cliff_back.png")
 gray = cv2.cvtColor(img_hough, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(final, 70, 390)
 lines = cv2.HoughLinesP(edges, 1, np.pi/180, 30, maxLineGap=1)
@@ -69,17 +69,17 @@ blur_image = cv2.GaussianBlur(img_orig, (5, 5), 2)
 #Creates canny edge detection image of the camera frame
 
 # front spec
-#canny = cv2.Canny(blur_image, 15, 240, apertureSize=3)
+#canny = cv2.Canny(blur_image, 20, 290, apertureSize=3)
 
 # back spec
-canny = cv2.Canny(blur_image, 15, 190, apertureSize=3)
+canny = cv2.Canny(blur_image, 60, 200, apertureSize=3)
 
 filName = 'canny2.png'
 cv2.imwrite(filName, canny)
 
 #culled edges threshold
-min_threshold = 250
-culled_edge = dip.BinaryAreaOpening(canny > 100, min_threshold)
+min_threshold = 320
+culled_edge = dip.BinaryAreaOpening(canny > 20, min_threshold)
 
 #converts dip.image back to numpy array
 #culled_edge = np.array(culled_edge)
@@ -97,7 +97,7 @@ for contour in contours:
 #cv2.imshow('canny edge detect', outlines)
 cv2.imshow('outlines', outlines)
 
-titles = ['image', 'hough transform', 'outlines','Canny', 'culled_edge']
+titles = ['image_orig_greyscale', 'hough transform', 'outlines','Canny', 'culled_edge']
 images = [img_orig,  img_hough, outlines, canny, culled_edge]
 
 # Loop to display the images corresponding to their title
