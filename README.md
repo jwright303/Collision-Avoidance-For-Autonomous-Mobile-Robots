@@ -68,5 +68,7 @@ models. While Open3d does provide modules to support this, they require large la
 
 
 ## Reasoning For Our Approach
+We decided to go with computer vision and rule based approach instead of the machine learning approach for two main reasons. To start, this is the same approach that our project partners use for their company so we can get more guidance in the case of running into problems. Similarly, the machine learning approach would require us to gather a large amount of data and label all the data which did not fit in the time frame of our project. Finally, we thought we could acheive similar results by using the computer vision and rules based approach which is the reason why we settled on this approach
 
 ## Future Projects
+A future project that can leverage the progress that we made can be to enable real time object detection and integrate this with a robot chassis to demonstrate the object and cliff detection and avoidance. This project would focus on taking the outputs of our programs and using them to determine the actions the robot chassis should take. 
