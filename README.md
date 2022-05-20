@@ -7,7 +7,7 @@ Today, robots are becoming more and more popular as a variety of new industries 
 These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS Time Of Flight (TOF) camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud and used by the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
 
 ### Build Status
-The most recent build includes point cloud simulations of object detection as well as edge detection. The Edge detection is a prototype, as it is imperfect, still needing to filter out all noises. Real-time detection for both objects and edges has not yet been tested or implemented, though it would be possible to transition from simulation data to real-time data with more available time.
+The most recent build includes point cloud simulations of object detection as well as edge detection. The edge detection is a prototype, as it is imperfect, still needing to filter out all noises. Real-time detection for both objects and edges has not yet been tested or implemented, though it would be possible to transition from simulation data to real-time data with more available time.
 
 ### Prerequisites
 
