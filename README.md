@@ -1,10 +1,13 @@
 # CA-ASMR
 
-### Importance of Collision Avoidance for AMR
+### Importance of Collision Avoidance for AMR / Objective
 
 Today, robots are becoming more and more popular as a variety of new industries begin to adpot them. In order for them to become more widespread, these robots need to maneuver around their environment safely requires the capability to detect and avoid objects and drop-offs. Our project: Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots through the use of a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, chairs, as well as avoiding falling off edges/cliffs like sidewalks. 
 
 These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS Time Of Flight (TOF) camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud and used by the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
+
+### Build Status
+The most recent build includes point cloud simulations of object detection as well as edge detection. The Edge detection is a prototype, as it is imperfect, still needing to filter out all noises. Real-time detection for both objects and edges has not yet been tested or implemented, though it would be possible to transition from simulation data to real-time data with more available time.
 
 ### Prerequisites
 
