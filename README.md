@@ -67,9 +67,7 @@ Before running the programs make sure to follow these steps in order:<br>
 You can now run some of the scripts using the point clouds scenarios located in `/ptclds/Cropped/`.<br> 
 As an example, entering `python3 pcldAnim.py --pth=./ptclds/Cropped/Two/ --pref=pcd_ --pcNum=88` will animate the point cloud scneario we captured of two objects. Note that running these programs for the first time may take a while .
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/41707123/170096781-f7e5bbf3-59fc-4ac0-af39-0a2a9646514d.gif)
 ![pcldAnim_demo](https://user-images.githubusercontent.com/41707123/170097193-94eb0878-3b86-411e-a9aa-c3172ed91164.gif)
-
 
 
 ## Alternative Routes Considered
