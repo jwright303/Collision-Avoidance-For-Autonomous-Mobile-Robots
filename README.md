@@ -1,24 +1,22 @@
 # CA-ASMR
 
 ### Importance of Collision Avoidance for AMR / Objective
+Today, robots are becoming more and more popular as a variety of new industries begin to adopt them. In order for them to become more widespread, these robots need to maneuver around their environment safely and require the capability to detect and avoid objects and drop-offs. Our project: Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots by using a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, and chairs, as well as avoiding falling off edges/cliffs like sidewalks. 
 
-Today, robots are becoming more and more popular as a variety of new industries begin to adopt them. In order for them to become more widespread, these robots need to maneuver around their environment safely and requires the capability to detect and avoid objects and drop-offs. Our project: Collision Avoidance for Autonomous Mobile Robots aims to become the vision for autonomous mobile robots through the use of a suite of detection tools. These tools are developed to assist the autonomous mobile robots in avoiding collisions with objects such as boxes, tables, chairs, as well as avoiding falling off edges/cliffs like sidewalks. 
-
-These detection tools utilize point cloud simulation and bounding boxes as the tools for achieving the object and edge detection. We used simulated data when initially developing the tools. Then we proceeded to obtain some data captured by a ESPROS Time Of Flight (TOF) camera 660, that is in the form of a depth image. These depth images are then converted to a point cloud and used by the detection tools. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. All of these applications would benefit primarily from the increase of efficiency and consequently drive up the profit margin for businesses who incorporate these tools into their operations.
+These detection tools utilize point cloud simulations and bounding boxes as the tools for achieving object and edge detection. We used entirely simulated data when initially developing the tools due to a delay in obtaining our Time Of Flight (TOF) camera. Later in the project, we proceeded to obtain some data captured by an ESPROS Time Of Flight (TOF) camera 660, which is in the form of point cloud images. Some applications that object and edge detection might be useful in would include warehouse management, delivery services, cars (self-driving/additional features), security cameras, and so much more. These applications would benefit primarily from the increase in efficiency and consequently, drive up the profit margin for businesses that incorporate these tools into their operations.
 
 ### Build Status
 The most recent build includes point cloud simulations of object detection as well as edge detection. The edge detection is a prototype, as it is imperfect, still needing to filter out all noises. Real-time detection for both objects and edges has not yet been tested or implemented, though it would be possible to transition from simulation data to real-time data with more available time.
 
 ### Prerequisites
+To begin developing and continue the work for this project, you will need to install ROS2 on your system for the robot operating system, as well as QTcreator the IDE. The ROS2 Galactic installation instructions can be found at https://docs.ros.org/en/galactic/Installation.html. The QTcreator installation can be found at https://www.qt.io/download, selecting the try qt option. These packages are used to interact with the camera and work with the captures that it creates. Similarly, like the software required for the development, you will also require an ESPROS TOF camera 660 as the capturing device https://www.espros.com/photonics/tofcam660/#pictures. While the camera and the associated software are not needed to run the project as it stands, it is critical if attempting to expand on this project.
 
-To begin developing and continue the work for this project, you will need to install ROS2 on your system for the robot operating system, as well as QTcreator the IDE. The ROS2 Galactic installation instructions can be found at https://docs.ros.org/en/galactic/Installation.html. The QTcreator installation can be found at https://www.qt.io/download, selecting the try qt option. Similarly like the software required for development. You will also require a ESPROS TOF camera 660 as the capturing device https://www.espros.com/photonics/tofcam660/#pictures. 
-
-Before using the ESPROS TOF camera 660, you will first need to calibrate the specifications of the camera to correctly utilize it. We would recommend that you should ask for guidance from PreAct Technologies (our project partner at the time) as to what the ESPROS TOF camera 660 specifications should be. After the calibration of the camera specifications, the raw data captured from the ESPROS TOF camera 660 will then need to be exported as a ply file usable for point clouds. There are multiple methods available to export the raw data captured from the camera to a ply file. Specifically EPROS has their own software interface for the camera that contains a feature to export as a ply file. Other methods include using functions from modules such as open3d and h5 to convert the depth image into a ply file. Initially our group used the ESPROS software to convert the raw data to ply files. But we were experiencing issues so, our group has been utilizing the depth images captured from the camera and converting them to ply files.
+Before using the ESPROS TOF camera 660, you will first need to calibrate the specifications of the camera to correctly utilize it. Our camera is calibrated to the standards that PreAct Technologies uses for its products. Therefore if expanding on this project, we would recommend that you ask for guidance from PreAct Technologies (our project partner at the time) as to what the ESPROS TOF camera 660 specifications should be. After the calibration of the camera specifications, the raw data captured from the ESPROS TOF camera 660 will then need to be exported as a ply or pcd file usable for point clouds. There are multiple methods available to export the raw data captured from the camera to a ply or pcd file. Specifically, EPROS has its own software interface for the camera that contains a feature to export as a pcd file. Other methods include using functions from modules such as open3d to convert the depth image into a ply or pcd file. It is also important to note that the point clouds produced by the camera may have a different scale or dimensions 
 
 ## Setup
 ### Needed Packages
 To start working with this project, first make sure h5py, opencv (python), numpy, and open3d are installed <br>
-Follow the links bellow for instructions on installation. It would also be useful to read through some of the open3d documentation as that is the primary module used
+Follow the links bellow for instructions on installation. It would also be useful to read through some of the open3d documentation as that is the primary library used
 
 h5py - https://docs.h5py.org/en/stable/build.html#source-installation-on-windows <br>
 opencv - https://pypi.org/project/opencv-python/ <br>
@@ -26,17 +24,15 @@ open3d - http://www.open3d.org/docs/release/getting_started.html <br>
 numpy - https://numpy.org/install/ <br>
 
 ### Other Needed Files
-Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script, and that you have the h5 file in the same location as the script. If you are using your own point cloud dataset, the format must be as follows:
+Point cloud files are also needed to make use of this repo. They can either be generated from an h5 file using dsetFormat.py, or they can be used directly. Note that this project includes a few point clouds scenarios that can be used with the programs located in `ptclds/Cropped/`. If you are generating the point cloud from an h5 file, make sure that you create a directory where they will be stored before running the script, and that you have the h5 file in the same location as the script. If you are using your own point cloud dataset, the format must be as follows:
 ```
 Point_Cloud_Folder
   | pref0.ply
   | pref1.ply
+  | pref2.ply
   ...
 ```
 Where pref is your chosen prefix of the point cloud. (This will be supplied through the command line later when running the scripts)
-
-### Other Equipment
-For this project we were also given an Esporos TOF camera 660 camera from our project partners to be able to collect our own point cloud images. While it is not strictly necessary to have a time of flight camera, some method of obtaining point clouds is needed to be able to make use of this project. It is also important to note that having the right scale of the point clouds is absolutely necessary to be able to utilize the object detection portion of this project.  
 
 #### Esporos Settings
 Mention some of the settings we set for the camera at the very end
