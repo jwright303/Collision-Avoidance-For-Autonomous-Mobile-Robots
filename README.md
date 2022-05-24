@@ -11,7 +11,7 @@ The most recent build includes point cloud simulations of object detection as we
 ### Prerequisites
 To begin developing and continue the work for this project, you will need to install ROS2 on your system for the robot operating system, as well as QTcreator the IDE. The ROS2 Galactic installation instructions can be found at https://docs.ros.org/en/galactic/Installation.html. The QTcreator installation can be found at https://www.qt.io/download, selecting the try qt option. These packages are used to interact with the camera and work with the captures that it creates. Similarly, like the software required for the development, you will also require an ESPROS TOF camera 660 as the capturing device https://www.espros.com/photonics/tofcam660/#pictures. While the camera and the associated software are not needed to run the project as it stands, it is critical if attempting to expand on this project.
 
-Before using the ESPROS TOF camera 660, you will first need to calibrate the specifications of the camera to correctly utilize it. Our camera is calibrated to the standards that PreAct Technologies uses for its products. Therefore if expanding on this project, we would recommend that you ask for guidance from PreAct Technologies (our project partner at the time) as to what the ESPROS TOF camera 660 specifications should be. After the calibration of the camera specifications, the raw data captured from the ESPROS TOF camera 660 will then need to be exported as a ply or pcd file usable for point clouds. There are multiple methods available to export the raw data captured from the camera to a ply or pcd file. Specifically, EPROS has its own software interface for the camera that contains a feature to export as a pcd file. Other methods include using functions from modules such as open3d to convert the depth image into a ply or pcd file. It is also important to note that the point clouds produced by the camera may have a different scale or dimensions 
+Before using the ESPROS TOF camera 660, you will first need to calibrate the specifications of the camera to correctly utilize it. Our camera is calibrated to the standards that PreAct Technologies uses for its products. Therefore if expanding on this project, we would recommend that you ask for guidance from PreAct Technologies (our project partner at the time) as to what the ESPROS TOF camera 660 specifications should be. After the calibration of the camera specifications, the raw data captured from the ESPROS TOF camera 660 will then need to be exported as a ply or pcd file usable for point clouds. There are multiple methods available to export the raw data captured from the camera to a ply or pcd file. Specifically, EPROS has its own software interface for the camera that contains a feature to export as a pcd file. Other methods include using functions from modules such as open3d to convert the depth image into a ply or pcd file. It is also important to note that the point clouds produced by the camera may have a different scale or dimensions than what is used in this project, so preprocessing of the images could be required before properly used by the programs in this repo.
 
 ## Setup
 ### Needed Packages
@@ -55,10 +55,17 @@ All of the files except for `h5Reader.py` and `depthToPC.py` take in command lin
 
 
 ## Running
-The most relevent program to run is the sim.py program. This program implements the object detection algorithm as well as the rules we created to dertermine when the robot should stop when it detects objects. <br>
+One of the most relevent program to run is the sim.py program. This program implements the object detection algorithm as well as the rules we created to dertermine when the robot should stop when it detects objects or drop-offs. <br>
 
 The object detection algorithm that it implements is pcCluster, and an example of it running can be found below <br>
-See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running
+See [pcCluster example](https://github.com/jwright303/CA-ASMR/blob/main/OBJREAD.md) for an example of the program running <br>
+
+Before running the programs make sure to follow these steps in order:<br>
+1. Clone this repository to your local machine<br>
+2. Follow the installation guides mentioned in the Setup section above<br>
+You can now run some of the scripts using the point clouds scenarios located in `/ptclds/Cropped/`.<br> 
+As an example, entering `python3 pcldAnim.py --pth=./ptclds/Cropped/Two/ --pref=pcd_ --pcNum=88` will animate the point cloud scneario we captured of two objects. Note that running these programs for the first time may take a while .
+
 
 ## Alternative Routes Considered
 `Consider breaking this down into Machine Learning Vs Computer Vision then mention all the computer vision options`
