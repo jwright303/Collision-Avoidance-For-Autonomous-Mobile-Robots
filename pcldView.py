@@ -39,6 +39,16 @@ def fixNFilter(arr):
 
   return arr
 
+def shiftTesting(pcld):
+  shift = -1.6
+  
+  arr = np.asarray(pcld.points)
+  arr[:,0] += shift
+  #arr *= 10
+  pcld.points = o3d.utility.Vector3dVector(arr)
+
+  return 
+
 
 def main():
   parser = argparse.ArgumentParser()
@@ -63,7 +73,9 @@ def main():
   maxV = np.amax(arr, axis=0)
   print("min values: ", minV)
   print("max values: ", maxV)
-  arr = arr[arr[:,1] > 0]
+  arr = arr[arr[:,2] > -20]
+  #arr[:,2] /= 2.5
+  shiftTesting(data)
 
   minV = np.amin(arr, axis=0)
   maxV = np.amax(arr, axis=0)

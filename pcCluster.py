@@ -58,7 +58,7 @@ def clusterFilter(mp, eps,  pcld, v=False):
         o3d.visualization.draw_geometries([pcld])
     #Read in a point cloud, and create a spare point cloud 
     #pcld = o3d.io.read_point_cloud("./PreAct_3D_F/pcd_80.ply")
-    #pcld = pcld.voxel_down_sample(voxel_size=VOXEL_D)
+    pcld = pcld.voxel_down_sample(voxel_size=VOXEL_D)
     #pcld = pcld.voxel_down_sample(voxel_size=0.02)
     #pcld, ind = pcld.remove_statistical_outlier(nb_neighbors=20,
     #                                                    std_ratio=2.0)
@@ -67,8 +67,6 @@ def clusterFilter(mp, eps,  pcld, v=False):
     #Get the points of the point cloud for a little manipulation
     arr = np.asarray(pcld.points)
 
-    #First fix the coordinate system of the point cloud, this way X (index 0) is right/left and Z (index 2) is front/back
-    #arr[:, [0, 1, 2]] = arr[:, [0, 2, 1]]
     #Save the fixed coordinate system to the copy point cloud
     pcld_copy.points = o3d.utility.Vector3dVector(arr)
     
@@ -87,16 +85,18 @@ def clusterFilter(mp, eps,  pcld, v=False):
     if verbose or v:
         o3d.visualization.draw_geometries([pcld])
 
-    #Cluster the cropped point cloud - Using the DBSCAN algorithm "A density-based algorithm for discovering clusters in large spatial databases with noise"
-    #This takes three parameters
+    # Cluster the cropped point cloud - Using the DBSCAN algorithm "A density-based algorithm for discovering clusters in large spatial databases with noise"
+    # This takes three parameters
     #       eps - the density parameter that is used to find the neighboring points
     #       min_points - the minimum number of points needed to register something as a cluster
-    #The function returns a labels array which assigns every point in the point cloud to a cluster a special cluster is also made (cluster 0) for the noise
+    # The function returns a labels array which assigns every point in the point cloud to a cluster a special cluster is also made (cluster 0) for the noise
     #
     # Note: The following 6 lines were taken from the Open3d website and modified slightly - From the Geometry section of the tutorial, under the DBSCAN header
     # URL: http://www.open3d.org/docs/latest/tutorial/geometry/pointcloud.html#DBSCAN-clustering
     #
     labels = np.array(pcld.cluster_dbscan(eps=eps, min_points=mp, print_progress=False))
+    if len(labels) == 0:
+      return pcld, labels
     max_label = labels.max()
     
     if verbose or v:

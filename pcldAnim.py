@@ -20,10 +20,34 @@ def distanceFilter(pclds):
 def cropTesting(pclds):
   for pc in pclds:
     arr = np.asarray(pc.points)
-    arr = arr[arr[:,1] > 1.0]
+    mask = (arr[:,1] <= -0.41) | (arr[:,1] >= 0)
+    arr = arr[mask]
+    #arr *= 10
     pc.points = o3d.utility.Vector3dVector(arr)
 
   return pclds
+
+def shiftTesting(pclds):
+  shift = -5
+  arr = np.asarray(pclds[0].points)
+  minV = np.amin(arr, axis=0)
+  maxV = np.amax(arr, axis=0)
+  print("min values: ", minV)
+  print("max values: ", maxV)
+  arr[:,0] += shift
+  minV = np.amin(arr, axis=0)
+  maxV = np.amax(arr, axis=0)
+  print("min values: ", minV)
+  print("max values: ", maxV)
+  
+  for pc in pclds:
+    arr = np.asarray(pc.points)
+    arr[:,0] += shift
+    #arr *= 10
+    pc.points = o3d.utility.Vector3dVector(arr)
+
+  return 
+  
 
 def main():
   parser = argparse.ArgumentParser()
@@ -41,6 +65,7 @@ def main():
   #newA = [pclds[70]] + [pclds[61]] + pclds[63:65] + [pclds[66]] + [pclds[68]] + pclds[:61] + pclds[62:63] + pclds[65:66] + pclds[67:68] + [pclds[69]]
   #pclds = distanceFilter(pclds)
   #pclds = cropTesting(pclds)
+  shiftTesting(pclds)
 
   rdr.viewPCs([pclds])
   

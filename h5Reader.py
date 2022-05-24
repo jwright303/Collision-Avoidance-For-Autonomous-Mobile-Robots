@@ -6,13 +6,13 @@ from matplotlib import pyplot as plt
 import sys
 
 
-def distanceFilter(pclds):
+def distanceFilter(pclds, distance):
   for pc in pclds:
     arr = np.asarray(pc.points)
     #arr /= -230
     sq = np.square(arr)
     sm = np.sum(sq, axis=1)
-    arr = arr[sm < 80.0]
+    arr = arr[sm < distance]
     pc.points = open3d.utility.Vector3dVector(arr)
 
   return pclds
@@ -108,10 +108,10 @@ def loadPCldsFromFile(path, file):
       ampFix = amp.reshape(76800, 1)
 
       #Remove all point in the cloud that don't meet the amplitude requirement
-      finShp = finShp[ampFix[:,0] > 28]
+      #finShp = finShp[ampFix[:,0] > 28]
 
-      #finShp[:, [0, 1, 2]] = finShp[:, [1, 2, 0]]
-      #finShp[:,2] *= -1
+      finShp[:, [0, 1, 2]] = finShp[:, [1, 2, 0]]
+      finShp[:,2] *= -1
 
       #Creates a pointcloud object and assignes all the points
       pcd = open3d.geometry.PointCloud()

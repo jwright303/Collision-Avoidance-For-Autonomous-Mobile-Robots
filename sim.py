@@ -63,13 +63,16 @@ def danger(box, arr, front):
   #Rules to determine when danger is
   #First rule checks to see if the bounding box spans the critical area and is close enough
   if (minP < 0 and maxP > 0) and front > -ZC:
-    print("Object close and spans the critical area")
-    geom.points = o3d.utility.Vector3dVector(frntPoints)
-    pcld_cluster, labels = clusterFilter(80, 0.3, geom)
-    
-    #Sub rule checks to see if there are really any points in front - (for things like doorways)
-    if len(labels) == 0:
+    if len(frntPoints) == 0:
       return False
+    else:
+      print("Object close and spans the critical area")
+      geom.points = o3d.utility.Vector3dVector(frntPoints)
+      pcld_cluster, labels = clusterFilter(20, 0.3, geom)
+      
+      #Sub rule checks to see if there are really any points in front - (for things like doorways)
+      if len(labels) == 0:
+        return False
     
     #Debugging lines
     #geom.points = o3d.utility.Vector3dVector(frntPoints)
@@ -109,7 +112,7 @@ def testCurPcld(curPc):
   geom = o3d.geometry.PointCloud()
   geom.points = o3d.utility.Vector3dVector(arr)
   
-  pcld_cluster, labels = clusterFilter(80, 0.3, geom)
+  pcld_cluster, labels = clusterFilter(40, 0.3, geom)
   
   #If any objects detected iterate through them and do the danger check
   if len(labels) > 0:
@@ -131,19 +134,21 @@ def testCurPcld(curPc):
   return None
 
 ###################################
+# This is the main simulation function, it iterates through the point clouds, displaying each one and running the detection algorithms on each
 #
-#
-#
-#
+# This function takes in the array of point clouds, and the rule box
+# This function will either return nothing if no object or cliff was detected or it will return some information about the frame where danger was detected
+##################################
 def pcAnim(pclds, boxC):
-  #Iterate through each scene
-  #For each scene create a new visualizer
   vis = o3d.visualization.Visualizer()
   vis.create_window()
+  vis.set_full_screen(True)
+  vc = vis.get_view_control()
+  vc.set_zoom(10)
   
-  #Start the visualization with the first point cloud of the scene
   geom = o3d.geometry.PointCloud()
 
+  #Start the visualization with the first point cloud of the scene
   geom.points = pclds[0].points
   vis.add_geometry(geom)
   vis.add_geometry(boxC)
@@ -167,7 +172,7 @@ def pcAnim(pclds, boxC):
       return pcRes
 
     i = i + 1
-    #time.sleep(0.2)
+    time.sleep(0.05)
 
     if i == 3 * len(pclds):
       break
@@ -176,13 +181,17 @@ def pcAnim(pclds, boxC):
 
   return None
 
+def rotate_fv(vis):
+  ctr = vis.get_view_control()
+  ctr.rotate(2.0, 0.0)
+  return False
 
 if __name__=="__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--pth", help="specify the path of the pclds", type=str)
   parser.add_argument("--pref", help="specify the prefix of the point clouds", type=str)
   parser.add_argument("--pcNum", help="specify the number of point clouds", type=int)
-  parser.add_argument("--dF", help="specify if a distance filter should be used", nargs='?', const=False, type=bool)
+  parser.add_argument("--dF", help="specify if a distance filter should be used", nargs='?', const=0, type=int)
   
   args = parser.parse_args()
   pth = args.pth
@@ -190,12 +199,16 @@ if __name__=="__main__":
   pcNum = args.pcNum
   dF = args.dF
 
+  #First thing that it does is create the rulebox and read the pointclouds
   box = createRuleBox()
   pclds = rdr.readPCFromLocation(pth, pref, pcNum)
+  
+  #Added the option to filter out points based on distance
   if dF:
-    pclds = rdr.distanceFilter(pclds)
+    pclds = rdr.distanceFilter(pclds, dF)
   res = pcAnim(pclds, box)
 
+  #Displays some debugging infromation about the scene that caused the simulation to stop if danger was detected
   if res != None:
     print("Frame before collision")
     bbs = res[1]
@@ -203,6 +216,6 @@ if __name__=="__main__":
     bbs.append(res[3])
     bbs.append(res[4])
     print("Index: " + str(res[2]))
-    o3d.visualization.draw_geometries(bbs)
-
+    #o3d.visualization.draw_geometries(bbs, width=2860, height=1600, top=0, left=0)
+    o3d.visualization.draw_geometries_with_animation_callback(bbs, rotate_fv, width=2860, height=1600, top=0, left=0)
   pass
