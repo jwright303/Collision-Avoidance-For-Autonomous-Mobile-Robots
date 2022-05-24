@@ -70,10 +70,12 @@ As an example, entering `python3 pcldAnim.py --pth=./ptclds/Cropped/Two/ --pref=
 ![pcldAnim_demo](https://user-images.githubusercontent.com/41707123/170097193-94eb0878-3b86-411e-a9aa-c3172ed91164.gif)
 
 
-## Alternative Routes Considered
-`Consider breaking this down into Machine Learning Vs Computer Vision then mention all the computer vision options`
-During the design phase of our project we considered using a machine learning approach for our object detection. For this method we looked at the PointPillars, You Only Look Once (YOLO), ** <br>
-models. While Open3d does provide modules to support this, they require large labeled datasets. Due to the limited time and access to point clouds, we decided to go with a different computer vision based approach. Another option we considered for this project was an edge detection based method.
+## Routes Considered
+### Machine Learning Methods
+During the design phase of our project we considered using a machine learning approach for our object detection. For this method we looked mainly at the PointPillars, and PointRCNN models within open3d. These models worked by training a model to recognize different categories of objects within a point cloud. One requirement of these models is that they need to be trained on a large labeled dataset to produce quality results.
+
+### Computer Vision Methods
+During the design phase we also looked at an edge detection method within opencv for object and drop-off identification. While this method did offer some promising results especially for real time detection, the noise that came with it ultimately lead us to use another method. The other computer vision method which we ended up using for our project was a clustering based approach. For this we used a density based clustering algorithm within open3d to identify objects within the scene and remove unneccesary noise. This in combination with some rules we developed are what enabled us to detect and simulate the avoidance of drop-offs and collisions.
 
 
 ## Reasoning For Our Approach
